@@ -1,8 +1,16 @@
 <?php
 
+use App\Http\Controllers\AboutController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\ClientController;
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PortfolioController;
+use App\Http\Controllers\ServiceController;
+use App\Http\Controllers\SliderController;
+use App\Http\Controllers\TeamController;
+use App\Http\Controllers\TestimonialController;
 use Illuminate\Support\Facades\Route;
 
 // Home
@@ -21,5 +29,25 @@ Route::get('/logout', [AuthController::class, 'logout']);
 
 
 // Dashboard
-Route::get('/dashboard', [DashboardController::class, 'index'])->middleware('auth');
+Route::prefix('/admin')->middleware('auth')->group(function(){
+    Route::get('/dashboard', [DashboardController::class, 'index']);
+
+    Route::resource('sliders', SliderController::class);
+    Route::resource('services', ServiceController::class);
+    Route::resource('testimonials', TestimonialController::class);
+    Route::resource('portfolios', PortfolioController::class);
+    Route::resource('clients', ClientController::class);
+    Route::resource('teams', TeamController::class);
+
+    Route::get('contact', [ContactController::class, 'index']);
+    Route::put('contact/{id}', [ContactController::class, 'update']);
+
+    Route::get('about', [AboutController::class, 'index']);
+    Route::put('about/{id}', [AboutController::class, 'update']);
+});
+    
+
+
+
+
 
